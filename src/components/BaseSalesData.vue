@@ -3,12 +3,8 @@
         <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
                 <div class="overflow-hidden">
-                    <table
-                        class="min-w-full text-left text-sm font-light text-surface dark:text-white"
-                    >
-                        <thead
-                            class="border-b border-neutral-200 font-medium dark:border-white/10"
-                        >
+                    <table class="min-w-full text-left text-sm font-light">
+                        <thead class="border-b border-neutral-200 font-medium">
                             <tr>
                                 <th
                                     scope="col"
@@ -37,10 +33,10 @@
                                 <th
                                     scope="col"
                                     class="px-6 py-4 cursor-pointer"
-                                    @click="sortTable('tokenStandard')"
+                                    @click="sortTable('isERC721')"
                                 >
                                     Token Standard
-                                    <span v-if="sortBy === 'tokenStandard'">
+                                    <span v-if="sortBy === 'isERC721'">
                                         {{
                                             sortDirection === "asc" ? "▲" : "▼"
                                         }}
@@ -64,7 +60,7 @@
                             <tr
                                 v-for="item in sortedData"
                                 :key="item.id"
-                                class="border-b border-neutral-200 dark:border-white/10"
+                                class="border-b border-neutral-200"
                             >
                                 <td
                                     class="whitespace-nowrap px-6 py-4 font-medium"
@@ -72,7 +68,9 @@
                                     {{ item.id }}
                                 </td>
                                 <td class="whitespace-nowrap px-6 py-4">
-                                    {{ item.timestamp }}
+                                    {{
+                                        timeAgo(new Date(item.timestamp / 1000))
+                                    }}
                                 </td>
                                 <td class="whitespace-nowrap px-6 py-4">
                                     {{
@@ -106,8 +104,8 @@ export default {
     },
     setup(props) {
         // Reactive properties
-        const sortBy = ref("id"); // default sort column
-        const sortDirection = ref("asc"); // default sort direction
+        const sortBy = ref("timestamp"); // default sort column
+        const sortDirection = ref("desc"); // default sort direction
 
         onMounted(() => {
             console.log(...props.sales);
@@ -137,11 +135,54 @@ export default {
             }
         }
 
+        function timeAgo(date) {
+            const now = new Date();
+            const diffInSeconds = Math.floor((now - date) / 1000);
+
+            // Define time intervals
+            const secondsInMinute = 60;
+            const secondsInHour = secondsInMinute * 60;
+            const secondsInDay = secondsInHour * 24;
+            const secondsInMonth = secondsInDay * 30; // Approximation
+            const secondsInYear = secondsInDay * 365; // Approximation
+
+            let formattedTime = "";
+
+            if (diffInSeconds < secondsInMinute) {
+                formattedTime = `${Math.floor(diffInSeconds)}s`;
+            } else if (diffInSeconds < secondsInHour) {
+                const minutes = Math.floor(diffInSeconds / secondsInMinute);
+                formattedTime = `${minutes}m`;
+            } else if (diffInSeconds < secondsInDay) {
+                const hours = Math.floor(diffInSeconds / secondsInHour);
+                const minutes = Math.floor(
+                    (diffInSeconds % secondsInHour) / secondsInMinute
+                );
+                formattedTime =
+                    minutes > 0 ? `${hours}h${minutes}m` : `${hours}h`;
+            } else if (diffInSeconds < secondsInMonth) {
+                const days = Math.floor(diffInSeconds / secondsInDay);
+                const hours = Math.floor(
+                    (diffInSeconds % secondsInDay) / secondsInHour
+                );
+                formattedTime = hours > 0 ? `${days}d ${hours}h` : `${days}d`;
+            } else if (diffInSeconds < secondsInYear) {
+                const months = Math.floor(diffInSeconds / secondsInMonth);
+                formattedTime = `${months}mo`;
+            } else {
+                const years = Math.floor(diffInSeconds / secondsInYear);
+                formattedTime = `${years}y`;
+            }
+
+            return formattedTime;
+        }
+
         return {
             sortTable,
             sortedData,
             sortDirection,
             sortBy,
+            timeAgo,
         };
     },
 };
