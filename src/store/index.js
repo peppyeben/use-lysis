@@ -8,12 +8,8 @@ export default createStore({
         error: { isError: false, error: null },
     },
     getters: {
-        GET_SALES(state) {
-            return state.sales;
-        },
-        GET_ERROR(state) {
-            return state.error;
-        },
+        GET_SALES: (state) => state.sales,
+        GET_ERROR: (state) => state.error,
     },
     mutations: {
         SET_ERROR(state, payload) {

@@ -1,33 +1,48 @@
 <template>
-    <div class="mt-16 flex justify-center">
-        <p class="text-lg">
-            Hover the link to see the
-            <a
-                href="#"
-                class="text-primary transition duration-150 ease-in-out hover:text-primary-600 focus:text-primary-600 active:text-primary-700 dark:text-primary-400 dark:hover:text-primary-500 dark:focus:text-primary-500 dark:active:text-primary-600"
-                data-twe-toggle="tooltip"
-                title="Hi! tooltip"
-                >tooltip</a
-            >
-        </p>
+    <div
+        class="flex mx-auto py-6 flex-col justify-center items-center space-y-4 w-full"
+    >
+        <BaseSalesData :sales="sales"></BaseSalesData>
+        <div class="mt-16 flex justify-center">
+            <ul v-if="sales.length">
+                <li
+                    v-for="sale in sales"
+                    :key="sale.id"
+                    class="flex flex-col justify-center items-center space-y-3"
+                >
+                    <!-- Display sale details -->
+                    <span>ERC721: {{ sale.isERC721 }}</span>
+                    <span>Seller: {{ sale.seller }}</span>
+                    <!-- {{ sale }} -->
+                </li>
+            </ul>
+            <p v-else>No sales data available.</p>
+        </div>
     </div>
 </template>
 
 <script>
-import { onMounted } from "vue";
+import { onMounted, computed } from "vue";
 import { useStore } from "vuex";
 import { Tooltip, initTWE } from "tw-elements";
+import BaseSalesData from "@/components/BaseSalesData.vue";
 
 export default {
     name: "HomeView",
-    components: {},
+    components: {
+        BaseSalesData,
+    },
     setup() {
         const store = useStore();
+
+        const sales = computed(() => store.getters.GET_SALES);
         onMounted(() => {
             initTWE({ Tooltip });
 
             store.dispatch("getSales");
         });
+
+        return { sales };
     },
 };
 </script>
