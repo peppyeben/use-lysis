@@ -4,7 +4,9 @@
             <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
                 <div class="overflow-hidden">
                     <table class="min-w-full text-left text-sm font-light">
-                        <thead class="border-b border-neutral-200 font-medium">
+                        <thead
+                            class="border-b border-border-neutral-600 font-medium"
+                        >
                             <tr>
                                 <th
                                     scope="col"
@@ -60,7 +62,7 @@
                             <tr
                                 v-for="item in sortedData"
                                 :key="item.id"
-                                class="border-b border-neutral-200"
+                                class="border-b border-neutral-600"
                             >
                                 <td
                                     class="whitespace-nowrap px-6 py-4 font-medium"

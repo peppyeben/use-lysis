@@ -5,6 +5,8 @@
   html {
     @apply text-surface;
     @apply bg-white;
+
+    font-family: "Roboto";
   }
   html.dark {
     @apply text-neutral-50;
