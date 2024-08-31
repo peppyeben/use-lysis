@@ -5,10 +5,12 @@ import { salesQuery } from "../utils/sales-query";
 export default createStore({
     state: {
         sales: [],
+        topXSales: [],
         error: { isError: false, error: null },
     },
     getters: {
         GET_SALES: (state) => state.sales,
+        GET_TOP_X_SALES: (state) => state.topXSales,
         GET_ERROR: (state) => state.error,
     },
     mutations: {
@@ -23,6 +25,10 @@ export default createStore({
 
         SET_SALES(state, payload) {
             state.sales = payload;
+        },
+
+        SET_TOP_X_SALES(state, payload) {
+            state.topXSales = payload;
         },
     },
     actions: {
@@ -40,6 +46,38 @@ export default createStore({
                     }
                 );
                 commit("SET_SALES", response.data.data.sales);
+            } catch (error) {
+                commit("SET_ERROR", error);
+            }
+        },
+        async getTopXSoldNFTs({ commit, getters, dispatch }, payload) {
+            try {
+                await dispatch("getSales");
+                console.log(payload);
+                const sales = getters.GET_SALES;
+
+                const tokenSalesCount = {};
+
+                sales.forEach((sale) => {
+                    const tokenKey = `${sale.tokenAddress}-${sale.tokenId}`;
+
+                    if (tokenSalesCount[tokenKey]) {
+                        tokenSalesCount[tokenKey]++;
+                    } else {
+                        tokenSalesCount[tokenKey] = 1;
+                    }
+                });
+
+                const sortedTokens = Object.entries(tokenSalesCount).sort(
+                    (a, b) => b[1] - a[1]
+                );
+
+                const sortedResult = sortedTokens.map(([tokenKey, count]) => {
+                    const [tokenAddress, tokenId] = tokenKey.split("-");
+                    return { tokenAddress, tokenId, count };
+                });
+
+                commit("SET_TOP_X_SALES", sortedResult);
             } catch (error) {
                 commit("SET_ERROR", error);
             }

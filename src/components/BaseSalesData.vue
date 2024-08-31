@@ -60,7 +60,7 @@
                         </thead>
                         <tbody>
                             <tr
-                                v-for="item in sortedData"
+                                v-for="item in paginatedData"
                                 :key="item.id"
                                 class="border-b border-neutral-600"
                             >
@@ -87,6 +87,34 @@
                             </tr>
                         </tbody>
                     </table>
+
+                    <div class="flex justify-between mt-4">
+                        <button
+                            @click="previousPage"
+                            :disabled="currentPage === 1"
+                            class="px-4 py-2 bg-zinc-600 text-white rounded"
+                            :class="
+                                currentPage === 1
+                                    ? 'cursor-not-allowed'
+                                    : 'cursor-pointer hover:bg-opacity-75'
+                            "
+                        >
+                            Previous
+                        </button>
+                        <span>Page {{ currentPage }} of {{ totalPages }}</span>
+                        <button
+                            @click="nextPage"
+                            :disabled="currentPage === totalPages"
+                            class="px-4 py-2 bg-zinc-600 text-white rounded"
+                            :class="
+                                currentPage === totalPages
+                                    ? 'cursor-not-allowed'
+                                    : 'cursor-pointer hover:bg-opacity-75'
+                            "
+                        >
+                            Next
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -95,6 +123,7 @@
 
 <script>
 import { ref, computed, onMounted } from "vue";
+import { useStore } from "vuex";
 
 export default {
     name: "BaseSalesData",
@@ -108,9 +137,14 @@ export default {
         // Reactive properties
         const sortBy = ref("timestamp"); // default sort column
         const sortDirection = ref("desc"); // default sort direction
+        const store = useStore();
 
-        onMounted(() => {
+        const currentPage = ref(1);
+        const itemsPerPage = ref(10);
+
+        onMounted(async () => {
             console.log(...props.sales);
+            store.dispatch("getTopXSoldNFTs", ...props.sales);
         });
 
         // Computed property for sorting data
@@ -124,6 +158,16 @@ export default {
                 }
                 return 0;
             });
+        });
+
+        const paginatedData = computed(() => {
+            const start = (currentPage.value - 1) * itemsPerPage.value;
+            const end = start + itemsPerPage.value;
+            return sortedData.value.slice(start, end);
+        });
+
+        const totalPages = computed(() => {
+            return Math.ceil(sortedData.value.length / itemsPerPage.value);
         });
 
         // Method to seller sorting
@@ -179,12 +223,29 @@ export default {
             return formattedTime;
         }
 
+        const previousPage = () => {
+            if (currentPage.value > 1) {
+                currentPage.value--;
+            }
+        };
+
+        const nextPage = () => {
+            if (currentPage.value < totalPages.value) {
+                currentPage.value++;
+            }
+        };
+
         return {
             sortTable,
             sortedData,
             sortDirection,
             sortBy,
             timeAgo,
+            currentPage,
+            nextPage,
+            previousPage,
+            totalPages,
+            paginatedData,
         };
     },
 };

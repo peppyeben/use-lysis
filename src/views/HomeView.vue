@@ -25,6 +25,7 @@ export default {
             initTWE({ Tooltip });
 
             store.dispatch("getSales");
+            store.dispatch("getTopXSoldNFTs");
         });
 
         return { sales };
