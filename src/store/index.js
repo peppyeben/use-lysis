@@ -50,10 +50,9 @@ export default createStore({
                 commit("SET_ERROR", error);
             }
         },
-        async getTopXSoldNFTs({ commit, getters, dispatch }, payload) {
+        async getTopXSoldNFTs({ commit, getters, dispatch }) {
             try {
                 await dispatch("getSales");
-                console.log(payload);
                 const sales = getters.GET_SALES;
 
                 const tokenSalesCount = {};
@@ -68,11 +67,14 @@ export default createStore({
                     }
                 });
 
-                const sortedTokens = Object.entries(tokenSalesCount).sort(
-                    (a, b) => b[1] - a[1]
-                );
+                // Filter and sort tokens with more than one sale
+                const filteredTokens = Object.entries(tokenSalesCount)
+                    // eslint-disable-next-line
+                    .filter(([_, count]) => count > 1) // Filter out tokens with only one sale
+                    .sort((a, b) => b[1] - a[1]); // Sort by sale count in descending order
 
-                const sortedResult = sortedTokens.map(([tokenKey, count]) => {
+                // Map the filtered and sorted tokens to the desired format
+                const sortedResult = filteredTokens.map(([tokenKey, count]) => {
                     const [tokenAddress, tokenId] = tokenKey.split("-");
                     return { tokenAddress, tokenId, count };
                 });

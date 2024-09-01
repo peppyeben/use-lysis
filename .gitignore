@@ -2,6 +2,9 @@
 node_modules
 /dist
 
+src/utils/sales.js
+src/utils/image-data.js
+
 *.env
 
 # local env files

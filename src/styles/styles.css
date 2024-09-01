@@ -1423,6 +1423,10 @@ p{
   --tw-bg-opacity: 0.75;
 }
 
+.hover\:opacity-70:hover{
+  opacity: 0.7;
+}
+
 .data-\[twe-carousel-fade\]\:z-0[data-twe-carousel-fade]{
   z-index: 0;
 }

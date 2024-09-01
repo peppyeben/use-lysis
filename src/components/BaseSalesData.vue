@@ -11,18 +11,6 @@
                                 <th
                                     scope="col"
                                     class="px-6 py-4 cursor-pointer"
-                                    @click="sortTable('id')"
-                                >
-                                    #
-                                    <span v-if="sortBy === 'id'">
-                                        {{
-                                            sortDirection === "asc" ? "▲" : "▼"
-                                        }}
-                                    </span>
-                                </th>
-                                <th
-                                    scope="col"
-                                    class="px-6 py-4 cursor-pointer"
                                     @click="sortTable('timestamp')"
                                 >
                                     Timestamp
@@ -47,9 +35,21 @@
                                 <th
                                     scope="col"
                                     class="px-6 py-4 cursor-pointer"
+                                    @click="sortTable('buyer')"
+                                >
+                                    Buyer
+                                    <span v-if="sortBy === 'buyer'">
+                                        {{
+                                            sortDirection === "asc" ? "▲" : "▼"
+                                        }}
+                                    </span>
+                                </th>
+                                <th
+                                    scope="col"
+                                    class="px-6 py-4 cursor-pointer"
                                     @click="sortTable('seller')"
                                 >
-                                    seller
+                                    Seller
                                     <span v-if="sortBy === 'seller'">
                                         {{
                                             sortDirection === "asc" ? "▲" : "▼"
@@ -64,11 +64,6 @@
                                 :key="item.id"
                                 class="border-b border-neutral-600"
                             >
-                                <td
-                                    class="whitespace-nowrap px-6 py-4 font-medium"
-                                >
-                                    {{ item.id }}
-                                </td>
                                 <td class="whitespace-nowrap px-6 py-4">
                                     {{
                                         timeAgo(new Date(item.timestamp / 1000))
@@ -81,8 +76,17 @@
                                             : "ERC1155"
                                     }}
                                 </td>
-                                <td class="whitespace-nowrap px-6 py-4">
-                                    {{ item.seller }}
+                                <td
+                                    class="whitespace-nowrap px-6 py-4 hover:opacity-70 cursor-pointer"
+                                    @click="viewOnBaseScan(item.buyer)"
+                                >
+                                    {{ shortenAddress(item.buyer) }}
+                                </td>
+                                <td
+                                    class="whitespace-nowrap px-6 py-4 hover:opacity-70 cursor-pointer"
+                                    @click="viewOnBaseScan(item.seller)"
+                                >
+                                    {{ shortenAddress(item.seller) }}
                                 </td>
                             </tr>
                         </tbody>
@@ -122,7 +126,7 @@
 </template>
 
 <script>
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onBeforeMount } from "vue";
 import { useStore } from "vuex";
 
 export default {
@@ -142,9 +146,8 @@ export default {
         const currentPage = ref(1);
         const itemsPerPage = ref(10);
 
-        onMounted(async () => {
-            console.log(...props.sales);
-            store.dispatch("getTopXSoldNFTs", ...props.sales);
+        onBeforeMount(() => {
+            store.dispatch("getSales");
         });
 
         // Computed property for sorting data
@@ -235,6 +238,17 @@ export default {
             }
         };
 
+        function shortenAddress(address) {
+            return `${address.slice(0, 5)}...${address.slice(-4)}`;
+        }
+
+        function viewOnBaseScan(address) {
+            window.open(
+                `${process.env.VUE_APP_BASESCAN_URL}/${address}`,
+                "_blank"
+            );
+        }
+
         return {
             sortTable,
             sortedData,
@@ -246,6 +260,8 @@ export default {
             previousPage,
             totalPages,
             paginatedData,
+            shortenAddress,
+            viewOnBaseScan,
         };
     },
 };
