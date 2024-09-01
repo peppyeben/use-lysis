@@ -1,9 +1,9 @@
 <template>
-    <div class="flex flex-col">
+    <div class="flex flex-col w-full">
         <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
                 <div class="overflow-hidden">
-                    <table class="min-w-full text-left text-sm font-light">
+                    <table class="min-w-full text-center text-sm font-light">
                         <thead
                             class="border-b border-border-neutral-600 font-medium"
                         >
@@ -35,10 +35,10 @@
                                 <th
                                     scope="col"
                                     class="px-6 py-4 cursor-pointer"
-                                    @click="sortTable('buyer')"
+                                    @click="sortTable('tokenAddress')"
                                 >
-                                    Buyer
-                                    <span v-if="sortBy === 'buyer'">
+                                    Token
+                                    <span v-if="sortBy === 'tokenAddress'">
                                         {{
                                             sortDirection === "asc" ? "▲" : "▼"
                                         }}
@@ -47,10 +47,10 @@
                                 <th
                                     scope="col"
                                     class="px-6 py-4 cursor-pointer"
-                                    @click="sortTable('seller')"
+                                    @click="sortTable('buyer')"
                                 >
-                                    Seller
-                                    <span v-if="sortBy === 'seller'">
+                                    Buyer
+                                    <span v-if="sortBy === 'buyer'">
                                         {{
                                             sortDirection === "asc" ? "▲" : "▼"
                                         }}
@@ -78,49 +78,48 @@
                                 </td>
                                 <td
                                     class="whitespace-nowrap px-6 py-4 hover:opacity-70 cursor-pointer"
+                                    @click="viewOnBaseScan(item.tokenAddress)"
+                                >
+                                    {{ shortenAddress(item.tokenAddress) }}
+                                </td>
+                                <td
+                                    class="whitespace-nowrap px-6 py-4 hover:opacity-70 cursor-pointer"
                                     @click="viewOnBaseScan(item.buyer)"
                                 >
                                     {{ shortenAddress(item.buyer) }}
                                 </td>
-                                <td
-                                    class="whitespace-nowrap px-6 py-4 hover:opacity-70 cursor-pointer"
-                                    @click="viewOnBaseScan(item.seller)"
-                                >
-                                    {{ shortenAddress(item.seller) }}
-                                </td>
                             </tr>
                         </tbody>
                     </table>
-
-                    <div class="flex justify-between mt-4">
-                        <button
-                            @click="previousPage"
-                            :disabled="currentPage === 1"
-                            class="px-4 py-2 bg-zinc-600 text-white rounded"
-                            :class="
-                                currentPage === 1
-                                    ? 'cursor-not-allowed'
-                                    : 'cursor-pointer hover:bg-opacity-75'
-                            "
-                        >
-                            Previous
-                        </button>
-                        <span>Page {{ currentPage }} of {{ totalPages }}</span>
-                        <button
-                            @click="nextPage"
-                            :disabled="currentPage === totalPages"
-                            class="px-4 py-2 bg-zinc-600 text-white rounded"
-                            :class="
-                                currentPage === totalPages
-                                    ? 'cursor-not-allowed'
-                                    : 'cursor-pointer hover:bg-opacity-75'
-                            "
-                        >
-                            Next
-                        </button>
-                    </div>
                 </div>
             </div>
+        </div>
+        <div class="flex justify-between items-center mt-4">
+            <button
+                @click="previousPage"
+                :disabled="currentPage === 1"
+                class="px-4 py-2 bg-zinc-600 text-white rounded"
+                :class="
+                    currentPage === 1
+                        ? 'cursor-not-allowed'
+                        : 'cursor-pointer hover:bg-opacity-75'
+                "
+            >
+                Previous
+            </button>
+            <span>Page {{ currentPage }} of {{ totalPages }}</span>
+            <button
+                @click="nextPage"
+                :disabled="currentPage === totalPages"
+                class="px-4 py-2 bg-zinc-600 text-white rounded"
+                :class="
+                    currentPage === totalPages
+                        ? 'cursor-not-allowed'
+                        : 'cursor-pointer hover:bg-opacity-75'
+                "
+            >
+                Next
+            </button>
         </div>
     </div>
 </template>

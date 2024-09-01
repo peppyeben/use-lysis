@@ -821,6 +821,10 @@ html.dark{
   display: flex;
 }
 
+.inline-flex{
+  display: inline-flex;
+}
+
 .table{
   display: table;
 }
@@ -845,6 +849,10 @@ html.dark{
   height: 100vh;
 }
 
+.h-\[30rem\]{
+  height: 30rem;
+}
+
 .w-0{
   width: 0px;
 }
@@ -867,6 +875,14 @@ html.dark{
 
 .w-screen{
   width: 100vw;
+}
+
+.w-4{
+  width: 1rem;
+}
+
+.w-\[33\%\]{
+  width: 33%;
 }
 
 .min-w-full{
@@ -962,6 +978,10 @@ html.dark{
   resize: both;
 }
 
+.flex-row{
+  flex-direction: row;
+}
+
 .flex-col{
   flex-direction: column;
 }
@@ -988,6 +1008,24 @@ html.dark{
   margin-bottom: calc(1rem * var(--tw-space-y-reverse));
 }
 
+.space-y-5 > :not([hidden]) ~ :not([hidden]){
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1.25rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1.25rem * var(--tw-space-y-reverse));
+}
+
+.space-x-4 > :not([hidden]) ~ :not([hidden]){
+  --tw-space-x-reverse: 0;
+  margin-right: calc(1rem * var(--tw-space-x-reverse));
+  margin-left: calc(1rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
+.space-y-3 > :not([hidden]) ~ :not([hidden]){
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.75rem * var(--tw-space-y-reverse));
+}
+
 .overflow-hidden{
   overflow: hidden;
 }
@@ -998,6 +1036,10 @@ html.dark{
 
 .overflow-x-auto{
   overflow-x: auto;
+}
+
+.overflow-y-auto{
+  overflow-y: auto;
 }
 
 .whitespace-normal{
@@ -1162,6 +1204,11 @@ html.dark{
   padding-right: 1.5rem;
 }
 
+.px-8{
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
 .px-\[0\.4rem\]{
   padding-left: 0.4rem;
   padding-right: 0.4rem;
@@ -1182,14 +1229,21 @@ html.dark{
   padding-bottom: 1rem;
 }
 
-.py-6{
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem;
-}
-
 .py-\[0\.4rem\]{
   padding-top: 0.4rem;
   padding-bottom: 0.4rem;
+}
+
+.pb-6{
+  padding-bottom: 1.5rem;
+}
+
+.pt-3{
+  padding-top: 0.75rem;
+}
+
+.pb-10{
+  padding-bottom: 2.5rem;
 }
 
 .text-left{
@@ -1213,6 +1267,20 @@ html.dark{
   line-height: 1.25rem;
 }
 
+.text-xl{
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
+.text-xs{
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.font-extrabold{
+  font-weight: 800;
+}
+
 .font-light{
   font-weight: 300;
 }
@@ -1227,6 +1295,10 @@ html.dark{
 
 .font-semibold{
   font-weight: 600;
+}
+
+.font-bold{
+  font-weight: 700;
 }
 
 .normal-case{
@@ -1294,6 +1366,35 @@ html.dark{
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
+.text-\[e74c3c\]{
+  color: e74c3c;
+}
+
+.text-\[\#e74c3c\]{
+  --tw-text-opacity: 1;
+  color: rgb(231 76 60 / var(--tw-text-opacity));
+}
+
+.text-\[\#52f625\]{
+  --tw-text-opacity: 1;
+  color: rgb(82 246 37 / var(--tw-text-opacity));
+}
+
+.text-\[\#c3c3c3\]{
+  --tw-text-opacity: 1;
+  color: rgb(195 195 195 / var(--tw-text-opacity));
+}
+
+.text-\[\#44cf2f\]{
+  --tw-text-opacity: 1;
+  color: rgb(68 207 47 / var(--tw-text-opacity));
+}
+
+.text-blue-500{
+  --tw-text-opacity: 1;
+  color: rgb(59 130 246 / var(--tw-text-opacity));
+}
+
 .no-underline{
   text-decoration-line: none;
 }
@@ -1347,6 +1448,11 @@ html.dark{
 
 .filter{
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
+.backdrop-filter{
+  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+  backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
 }
 
 .transition-\[height\]{
@@ -1552,6 +1658,17 @@ p{
   }
 }
 
+@media (min-width: 768px){
+  .md\:w-\[70\%\]{
+    width: 70%;
+  }
+
+  .md\:px-\[10\%\]{
+    padding-left: 10%;
+    padding-right: 10%;
+  }
+}
+
 @media (min-width: 1024px){
   .lg\:-mx-8{
     margin-left: -2rem;
@@ -1564,6 +1681,10 @@ p{
 
   .lg\:mt-0{
     margin-top: 0px;
+  }
+
+  .lg\:w-\[70\%\]{
+    width: 70%;
   }
 
   .lg\:px-8{

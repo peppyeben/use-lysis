@@ -1,5 +1,5 @@
 export const salesQuery = `query MyQuery {
-    sales(limit: 300, orderBy: timestamp_DESC_NULLS_LAST) {
+    sales(limit: 3000, orderBy: timestamp_DESC_NULLS_LAST) {
       buyer
       id
       isERC721
