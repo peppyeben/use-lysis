@@ -1,6 +1,8 @@
 <template>
     <div class="flex flex-col min-h-screen pb-6">
-        <ErrorMessage v-if="getError.isError"></ErrorMessage>
+        <ErrorMessage
+            v-if="getError.isError || names.length < 1"
+        ></ErrorMessage>
         <div
             class="flex-grow mx-auto flex flex-col px-8 pb-10 justify-start items-center space-y-4 w-full relative md:px-[10%]"
             v-else
@@ -21,7 +23,7 @@ import FooterSection from "@/components/FooterSection.vue";
 import LoaderComponent from "@/components/LoaderComponent.vue";
 import RegisteredNames from "@/components/RegisteredNames.vue";
 import TopSectionBaseNames from "@/components/TopSectionBaseNames.vue";
-import { computed, onBeforeMount } from "vue";
+import { computed, onMounted } from "vue";
 import { useStore } from "vuex";
 
 export default {
@@ -41,7 +43,7 @@ export default {
         const groupedNames = computed(() => store.getters.GET_GROUPED_NAMES);
         const getError = computed(() => store.getters.GET_ERROR);
 
-        onBeforeMount(() => {
+        onMounted(() => {
             store.dispatch("computeGroupNames");
         });
 

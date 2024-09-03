@@ -1,6 +1,8 @@
 <template>
     <div class="flex flex-col min-h-screen pb-6">
-        <ErrorMessage v-if="getError.isError"></ErrorMessage>
+        <ErrorMessage
+            v-if="getError.isError || sales.length < 1"
+        ></ErrorMessage>
         <div
             class="flex-grow mx-auto flex flex-col px-8 pb-10 justify-start items-center space-y-4 w-full relative md:px-[10%]"
             v-else

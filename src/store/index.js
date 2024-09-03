@@ -78,6 +78,7 @@ export default createStore({
                 commit("SET_NOT_LOADING");
                 commit("SET_REMOVE_ERROR");
             } catch (error) {
+                commit("SET_NOT_LOADING");
                 commit("SET_ERROR", error);
             }
         },
@@ -116,6 +117,7 @@ export default createStore({
                 commit("SET_REMOVE_ERROR");
             } catch (error) {
                 commit("SET_ERROR", error);
+                commit("SET_NOT_LOADING");
             }
         },
         async computeGroupSales({ commit, getters, dispatch }) {
@@ -129,6 +131,7 @@ export default createStore({
                 commit("SET_REMOVE_ERROR");
             } catch (error) {
                 commit("SET_ERROR", error);
+                commit("SET_NOT_LOADING");
             }
         },
         async getTopXBuyers({ commit, getters, dispatch }) {
@@ -168,6 +171,7 @@ export default createStore({
                 commit("SET_REMOVE_ERROR");
             } catch (error) {
                 commit("SET_ERROR", error);
+                commit("SET_NOT_LOADING");
             }
         },
         async getNames({ commit }) {
@@ -189,10 +193,10 @@ export default createStore({
                 commit("SET_REMOVE_ERROR");
             } catch (error) {
                 commit("SET_ERROR", error);
+                commit("SET_NOT_LOADING");
             }
         },
         async computeGroupNames({ commit, getters, dispatch }) {
-            await dispatch("getNames");
             commit("SET_LOADING");
             try {
                 await dispatch("getNames");
@@ -203,6 +207,7 @@ export default createStore({
                 commit("SET_REMOVE_ERROR");
             } catch (error) {
                 commit("SET_ERROR", error);
+                commit("SET_NOT_LOADING");
             }
         },
     },

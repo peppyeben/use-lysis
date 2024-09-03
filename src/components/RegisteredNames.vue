@@ -25,14 +25,19 @@ export default {
     },
     setup(props) {
         const store = useStore();
-
         const namesChart = ref(null);
         let chartInstance = null;
 
         const renderChart = () => {
+            if (!namesChart.value) {
+                console.error("Canvas reference is null");
+                return;
+            }
+
             if (chartInstance) {
                 chartInstance.destroy(); // Destroy the previous chart instance if it exists
             }
+
             chartInstance = new Chart(namesChart.value, {
                 type: "line",
                 data: {
