@@ -1,4 +1,4 @@
-# magiceden-nft-sales
+# UseLysis
 
 ## Project setup
 ```
@@ -17,8 +17,5 @@ yarn build
 
 ### Lints and fixes files
 ```
-yarn lint
+yarn lint:watch
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
