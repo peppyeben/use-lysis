@@ -23,10 +23,10 @@
                                 <th
                                     scope="col"
                                     class="px-6 py-4 cursor-pointer"
-                                    @click="sortTable('isERC721')"
+                                    @click="sortTable('name')"
                                 >
-                                    Token Standard
-                                    <span v-if="sortBy === 'isERC721'">
+                                    Name
+                                    <span v-if="sortBy === 'name'">
                                         {{
                                             sortDirection === "asc" ? "▲" : "▼"
                                         }}
@@ -35,10 +35,10 @@
                                 <th
                                     scope="col"
                                     class="px-6 py-4 cursor-pointer"
-                                    @click="sortTable('tokenAddress')"
+                                    @click="sortTable('expires')"
                                 >
-                                    Token
-                                    <span v-if="sortBy === 'tokenAddress'">
+                                    Expires
+                                    <span v-if="sortBy === 'expires'">
                                         {{
                                             sortDirection === "asc" ? "▲" : "▼"
                                         }}
@@ -47,10 +47,10 @@
                                 <th
                                     scope="col"
                                     class="px-6 py-4 cursor-pointer"
-                                    @click="sortTable('buyer')"
+                                    @click="sortTable('owner')"
                                 >
-                                    Buyer
-                                    <span v-if="sortBy === 'buyer'">
+                                    Registered By
+                                    <span v-if="sortBy === 'owner'">
                                         {{
                                             sortDirection === "asc" ? "▲" : "▼"
                                         }}
@@ -73,22 +73,20 @@
                                 </td>
                                 <td class="whitespace-nowrap px-6 py-4">
                                     {{
-                                        item.isERC721 == true
-                                            ? "ERC721"
-                                            : "ERC1155"
+                                        String(item.name).length > 12
+                                            ? String(item.name).slice(0, 9) +
+                                              "..."
+                                            : String(item.name)
                                     }}
                                 </td>
-                                <td
-                                    class="whitespace-nowrap px-6 py-4 hover:opacity-70 cursor-pointer"
-                                    @click="viewOnBaseScan(item.tokenAddress)"
-                                >
-                                    {{ shortenAddress(item.tokenAddress) }}
+                                <td class="whitespace-nowrap px-6 py-4">
+                                    {{ $timeUntil(item.expires * 1e3) }}
                                 </td>
                                 <td
                                     class="whitespace-nowrap px-6 py-4 hover:opacity-70 cursor-pointer"
-                                    @click="viewOnBaseScan(item.buyer)"
+                                    @click="viewOnBaseScan(item.owner)"
                                 >
-                                    {{ shortenAddress(item.buyer) }}
+                                    {{ shortenAddress(item.owner) }}
                                 </td>
                             </tr>
                         </tbody>
@@ -128,12 +126,12 @@
 
 <script>
 import { ref, computed, onBeforeMount } from "vue";
-import { useStore } from "vuex";
+// import { useStore } from "vuex";
 
 export default {
-    name: "BaseSalesData",
+    name: "BaseNameData",
     props: {
-        sales: {
+        names: {
             type: Array,
             default: () => [],
         },
@@ -142,18 +140,19 @@ export default {
         // Reactive properties
         const sortBy = ref("timestamp"); // default sort column
         const sortDirection = ref("desc"); // default sort direction
-        const store = useStore();
+        // const store = useStore();
 
         const currentPage = ref(1);
         const itemsPerPage = ref(10);
 
         onBeforeMount(() => {
-            store.dispatch("getSales");
+            // store.dispatch("getSales");
+            // console.log(props.names);
         });
 
         // Computed property for sorting data
         const sortedData = computed(() => {
-            return [...props.sales].sort((a, b) => {
+            return [...props.names].sort((a, b) => {
                 if (a[sortBy.value] < b[sortBy.value]) {
                     return sortDirection.value === "asc" ? -1 : 1;
                 }

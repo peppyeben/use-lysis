@@ -1,22 +1,27 @@
 import axios from "axios";
 import { createStore } from "vuex";
-import { salesQuery } from "../utils/sales-query";
+import { salesQuery, nameQuery } from "../utils/sales-query";
 import { groupSales } from "@/utils/group-sales";
+import { groupNames } from "@/utils/group-names";
 
 export default createStore({
     state: {
         sales: [],
+        names: [],
         topXSales: [],
         topXBuyers: [],
         groupedSales: [],
+        groupedNames: [],
         isLoading: false,
         error: { isError: false, error: null },
     },
     getters: {
         GET_SALES: (state) => state.sales,
+        GET_NAMES: (state) => state.names,
         GET_TOP_X_SALES: (state) => state.topXSales,
         GET_TOP_X_BUYERS: (state) => state.topXBuyers,
         GET_GROUPED_SALES: (state) => state.groupedSales,
+        GET_GROUPED_NAMES: (state) => state.groupedNames,
         GET_ERROR: (state) => state.error,
         GET_LOADING: (state) => state.isLoading,
     },
@@ -29,29 +34,29 @@ export default createStore({
             state.error.isError = false;
             state.error.error = null;
         },
-
         SET_SALES(state, payload) {
             state.sales = payload;
         },
-
+        SET_NAMES(state, payload) {
+            state.names = payload;
+        },
         SET_LOADING(state) {
             state.isLoading = true;
         },
-
         SET_NOT_LOADING(state) {
             state.isLoading = false;
         },
-
         SET_TOP_X_SALES(state, payload) {
             state.topXSales = payload;
         },
-
         SET_TOP_X_BUYERS(state, payload) {
             state.topXBuyers = payload;
         },
-
         SET_GROUPED_SALES(state, payload) {
             state.groupedSales = payload;
+        },
+        SET_GROUPED_NAMES(state, payload) {
+            state.groupedNames = payload;
         },
     },
     actions: {
@@ -71,6 +76,7 @@ export default createStore({
                 );
                 commit("SET_SALES", response.data.data.sales);
                 commit("SET_NOT_LOADING");
+                commit("SET_REMOVE_ERROR");
             } catch (error) {
                 commit("SET_ERROR", error);
             }
@@ -106,7 +112,8 @@ export default createStore({
                 });
 
                 commit("SET_TOP_X_SALES", sortedResult);
-                commit("SET_NOT_LOADING", sortedResult);
+                commit("SET_NOT_LOADING");
+                commit("SET_REMOVE_ERROR");
             } catch (error) {
                 commit("SET_ERROR", error);
             }
@@ -119,6 +126,7 @@ export default createStore({
                 const groupedSales = groupSales(sales);
                 commit("SET_GROUPED_SALES", groupedSales);
                 commit("SET_NOT_LOADING");
+                commit("SET_REMOVE_ERROR");
             } catch (error) {
                 commit("SET_ERROR", error);
             }
@@ -157,6 +165,42 @@ export default createStore({
 
                 commit("SET_TOP_X_BUYERS", sortedBuyers);
                 commit("SET_NOT_LOADING");
+                commit("SET_REMOVE_ERROR");
+            } catch (error) {
+                commit("SET_ERROR", error);
+            }
+        },
+        async getNames({ commit }) {
+            commit("SET_LOADING");
+            try {
+                const response = await axios.post(
+                    process.env.VUE_APP_DATA_URL,
+                    {
+                        query: nameQuery,
+                    },
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    }
+                );
+                commit("SET_NAMES", response.data.data.nameRegisteredEvents);
+                commit("SET_NOT_LOADING");
+                commit("SET_REMOVE_ERROR");
+            } catch (error) {
+                commit("SET_ERROR", error);
+            }
+        },
+        async computeGroupNames({ commit, getters, dispatch }) {
+            await dispatch("getNames");
+            commit("SET_LOADING");
+            try {
+                await dispatch("getNames");
+                const names = getters.GET_NAMES;
+                const groupedNames = groupNames(names);
+                commit("SET_GROUPED_NAMES", groupedNames);
+                commit("SET_NOT_LOADING");
+                commit("SET_REMOVE_ERROR");
             } catch (error) {
                 commit("SET_ERROR", error);
             }

@@ -21,5 +21,5 @@ export const groupSales = (data) => {
         totalSalesPrice: Number(groupedData[date]).toFixed(2),
     }));
 
-    return result;
+    return result.slice(0, 10);
 };

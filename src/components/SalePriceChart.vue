@@ -3,7 +3,10 @@
         class="w-full flex justify-center flex-col space-y-5 items-center pt-3 pb-6"
     >
         <div class="font-extrabold text-xl text-center">Sales History</div>
-        <canvas ref="myChart" class="w-full md:w-[70%] lg:w-[70%]"></canvas>
+        <canvas
+            ref="salesPriceChart"
+            class="w-full md:w-[70%] lg:w-[70%]"
+        ></canvas>
     </div>
 </template>
 
@@ -21,7 +24,7 @@ export default {
         },
     },
     setup(props) {
-        const myChart = ref(null);
+        const salesPriceChart = ref(null);
         const store = useStore();
         let chartInstance = null;
 
@@ -29,7 +32,7 @@ export default {
             if (chartInstance) {
                 chartInstance.destroy(); // Destroy the previous chart instance if it exists
             }
-            chartInstance = new Chart(myChart.value, {
+            chartInstance = new Chart(salesPriceChart.value, {
                 type: "bar",
                 data: {
                     labels: props.groupedSales.map((x) => x.date),
@@ -77,7 +80,7 @@ export default {
         );
 
         return {
-            myChart,
+            salesPriceChart,
         };
     },
 };

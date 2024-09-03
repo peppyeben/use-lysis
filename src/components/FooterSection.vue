@@ -1,5 +1,7 @@
 <template>
-    <div class="flex flex-col space-y-3 justify-center items-center mx-auto">
+    <div
+        class="flex flex-col space-y-3 justify-center items-center mx-auto mt-auto"
+    >
         <p>
             Built by
             <a href="https://github.com/peppyeben" class="text-[#52f625]"
