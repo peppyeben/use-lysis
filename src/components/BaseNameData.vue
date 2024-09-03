@@ -147,7 +147,6 @@ export default {
 
         onBeforeMount(() => {
             // store.dispatch("getSales");
-            // console.log(props.names);
         });
 
         // Computed property for sorting data
