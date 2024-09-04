@@ -9,7 +9,7 @@
                     to="/"
                 >
                     <img
-                        src="favicon.svg"
+                        src="favicon.png"
                         alt="TE Logo"
                         loading="lazy"
                         class="w-[2.5rem] rounded-full"
