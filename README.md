@@ -22,7 +22,7 @@ yarn lint:watch
 
 ### TO-DO
 
-In no particular 
+In no particular order
 
 - Implement a feature to track wallet activity, showing specific wallets' involvement in NFT transactions and name registrations.
   
